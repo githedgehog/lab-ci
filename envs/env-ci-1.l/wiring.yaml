@@ -147,6 +147,8 @@ spec:
     E1/3: 4x10G
     E1/5: 4x25G
     E1/10: 4x10G
+    E1/17: 4x25G
+    E1/18: 4x25G
   redundancy:
     group: eslag-1
     type: eslag
@@ -473,13 +475,22 @@ spec:
   vpcLoopback:
     links:
       - switch1:
-          port: sse-c4632-01/E1/5/1
+          port: sse-c4632-01/E1/17/1
         switch2:
-          port: sse-c4632-01/E1/5/2
+          port: sse-c4632-01/E1/18/1
       - switch1:
-          port: sse-c4632-01/E1/5/3
+          port: sse-c4632-01/E1/17/2
         switch2:
-          port: sse-c4632-01/E1/5/4
+          port: sse-c4632-01/E1/18/2
+      - switch1:
+          port: sse-c4632-01/E1/17/3
+        switch2:
+          port: sse-c4632-01/E1/18/3
+      - switch1:
+          port: sse-c4632-01/E1/17/4
+        switch2:
+          port: sse-c4632-01/E1/18/4
+
 ##
 ## Servers
 ##
