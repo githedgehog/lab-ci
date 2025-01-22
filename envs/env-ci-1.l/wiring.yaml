@@ -208,59 +208,172 @@ spec:
 apiVersion: vpc.githedgehog.com/v1beta1
 kind: External
 metadata:
-  name: default--5835
+  name: default
 spec:
   ipv4Namespace: default
-  inboundCommunity: 65102:3001
-  outboundCommunity: 3001:65102
+  inboundCommunity: 65101:3001
+  outboundCommunity: 3001:65101
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: other
+spec:
+  ipv4Namespace: default
+  inboundCommunity: 65101:4001
+  outboundCommunity: 4001:65101
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: ds3000-01--e1-2-4-external--5835
+  name: ds3000-01--external--ds2000-02
 spec:
   external:
     link:
       switch:
-        port: ds3000-01/E1/2/4
+        port: ds3000-01/E1/1/1
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: ds3000-02--e1-2-4-external--5835
+  name: ds3000-02--external--ds2000-02
 spec:
   external:
     link:
       switch:
-        port: ds3000-02/E1/2/4
+        port: ds3000-02/E1/1/1
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-03--external--ds2000-02
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-03/E1/1/4
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: sse-c4632-01--external--ds2000-02
+spec:
+  external:
+    link:
+      switch:
+        port: sse-c4632-01/E1/1/1
+# ---
+# apiVersion: vpc.githedgehog.com/v1beta1
+# kind: ExternalAttachment
+# metadata:
+#   name: ds3000-01--default
+# spec:
+#   external: default
+#   connection: ds3000-01--external--ds2000-02
+#   switch:
+#     vlan: 100
+#     ip: 100.2.100.2/24
+#   neighbor:
+#     asn: 64102
+#     ip: 100.2.100.6
+# ---
+# apiVersion: vpc.githedgehog.com/v1beta1
+# kind: ExternalAttachment
+# metadata:
+#   name: ds3000-02--default
+# spec:
+#   external: default
+#   connection: ds3000-02--external--ds2000-02
+#   switch:
+#     vlan: 100
+#     ip: 100.4.100.2/24
+#   neighbor:
+#     asn: 64102
+#     ip: 100.4.100.6
+# ---
+# apiVersion: vpc.githedgehog.com/v1beta1
+# kind: ExternalAttachment
+# metadata:
+#   name: ds3000-01--other
+# spec:
+#   external: other
+#   connection: ds3000-01--external--ds2000-02
+#   switch:
+#     vlan: 200
+#     ip: 100.2.200.2/24
+#   neighbor:
+#     asn: 64102
+#     ip: 100.2.200.6
+# ---
+# apiVersion: vpc.githedgehog.com/v1beta1
+# kind: ExternalAttachment
+# metadata:
+#   name: ds3000-02--other
+# spec:
+#   external: other
+#   connection: ds3000-02--external--ds2000-02
+#   switch:
+#     vlan: 200
+#     ip: 100.4.200.2/24
+#   neighbor:
+#     asn: 64102
+#     ip: 100.4.200.6
 ---
 apiVersion: vpc.githedgehog.com/v1beta1
 kind: ExternalAttachment
 metadata:
-  name: ds3000-01-default--5835
+  name: ds3000-03--default
 spec:
-  external: default--5835
-  connection: ds3000-01--e1-2-4-external--5835
+  external: default
+  connection: ds3000-03--external--ds2000-02
   switch:
-    vlan: 20
-    ip: 192.168.10.2/30
+    vlan: 100
+    ip: 100.6.100.2/24
   neighbor:
     asn: 64102
-    ip: 192.168.10.1
+    ip: 100.6.100.6
 ---
 apiVersion: vpc.githedgehog.com/v1beta1
 kind: ExternalAttachment
 metadata:
-  name: ds3000-02-default--5835
+  name: sse-c4632-01--default
 spec:
-  external: default--5835
-  connection: ds3000-02--e1-2-4-external--5835
+  external: default
+  connection: sse-c4632-01--external--ds2000-02
   switch:
-    vlan: 30
-    ip: 192.168.13.2/30
+    vlan: 100
+    ip: 100.8.100.2/24
   neighbor:
     asn: 64102
-    ip: 192.168.13.1
+    ip: 100.8.100.6
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-03--other
+spec:
+  external: other
+  connection: ds3000-03--external--ds2000-02
+  switch:
+    vlan: 200
+    ip: 100.6.200.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.6.200.6
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: sse-c4632-01--other
+spec:
+  external: other
+  connection: sse-c4632-01--external--ds2000-02
+  switch:
+    vlan: 200
+    ip: 100.8.200.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.8.200.6
 ---
 ###
 ### Connections
