@@ -27,6 +27,13 @@ metadata:
 spec: {}
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
+kind: SwitchGroup
+metadata:
+  name: border
+  namespace: default
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
 kind: Switch
 metadata:
   annotations:
@@ -120,6 +127,8 @@ spec:
     E1/11: 4x10G
     E1/17: 4x25G
     E1/18: 4x25G
+  groups:
+    - border
   redundancy:
     group: eslag-1
     type: eslag
@@ -149,6 +158,8 @@ spec:
     E1/10: 4x10G
     E1/17: 4x25G
     E1/18: 4x25G
+  groups:
+    - border
   redundancy:
     group: eslag-1
     type: eslag
