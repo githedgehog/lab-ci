@@ -194,7 +194,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8912
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/2
+    power.hhfab.githedgehog.com/psu1: http://192.168.90.110/outlet/1
   name: ds4000-02
 spec:
   boot:
