@@ -39,7 +39,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8901
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/3
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/3
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:84:00.0
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:84:00.1
     link.hhfab.githedgehog.com/E1_1_4: pci@0000:82:00.1
@@ -71,7 +71,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8902
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/4
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/4
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:0d:00.1
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:0d:00.0
     link.hhfab.githedgehog.com/E1_1_4: pci@0000:07:00.1
@@ -108,7 +108,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8903
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/5
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/5
     link.hhfab.githedgehog.com/E1_1_1: pci@0000:07:00.0
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:0c:00.1
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:0c:00.0
@@ -139,7 +139,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8904
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/6
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/6
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:05:00.1
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:05:00.0
     link.hhfab.githedgehog.com/E1_10_4: pci@0000:0a:00.0
@@ -170,7 +170,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8911
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.142/outlet/1
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/1
   name: ds4000-01
 spec:
   boot:
@@ -194,7 +194,7 @@ metadata:
   annotations:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8912
-    power.hhfab.githedgehog.com/psu1: http://192.168.90.110/outlet/1
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.110/outlet/1
   name: ds4000-02
 spec:
   boot:
