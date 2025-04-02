@@ -220,6 +220,8 @@ apiVersion: vpc.githedgehog.com/v1beta1
 kind: External
 metadata:
   name: default
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   ipv4Namespace: default
   inboundCommunity: 65101:3001
@@ -229,6 +231,8 @@ apiVersion: vpc.githedgehog.com/v1beta1
 kind: External
 metadata:
   name: other
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   ipv4Namespace: default
   inboundCommunity: 65101:4001
