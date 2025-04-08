@@ -242,6 +242,8 @@ apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
   name: ds3000-01--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   external:
     link:
@@ -252,6 +254,8 @@ apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
   name: ds3000-02--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   external:
     link:
@@ -262,6 +266,8 @@ apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
   name: ds3000-03--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   external:
     link:
@@ -272,6 +278,8 @@ apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
   name: sse-c4632-01--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
 spec:
   external:
     link:
