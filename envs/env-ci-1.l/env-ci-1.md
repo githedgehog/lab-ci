@@ -1,0 +1,126 @@
+# env-ci-1 Network Diagram
+```mermaid
+graph TD
+
+%% Style definitions
+classDef gateway fill:#FFF2CC,stroke:#999,stroke-width:1px,color:#000
+classDef spine   fill:#F8CECC,stroke:#B85450,stroke-width:1px,color:#000
+classDef leaf    fill:#DAE8FC,stroke:#6C8EBF,stroke-width:1px,color:#000
+classDef server  fill:#D5E8D4,stroke:#82B366,stroke-width:1px,color:#000
+classDef mclag   fill:#F0F8FF,stroke:#6C8EBF,stroke-width:1px,color:#000
+classDef eslag   fill:#FFF8E8,stroke:#CC9900,stroke-width:1px,color:#000
+classDef hidden fill:none,stroke:none
+classDef legendBox fill:white,stroke:#999,stroke-width:1px,color:#000
+
+%% Network diagram
+subgraph Spines[ ]
+	direction LR
+	subgraph Ds4000_01_Group [ ]
+		direction TB
+		Ds4000_01["ds4000-01<br>spine"]
+	end
+	subgraph Ds4000_02_Group [ ]
+		direction TB
+		Ds4000_02["ds4000-02<br>spine"]
+	end
+end
+
+subgraph Leaves[ ]
+	direction LR
+	subgraph MCLAG_0 [MCLAG]
+		direction LR
+		Ds3000_01["ds3000-01<br>server-leaf"]
+		Ds3000_02["ds3000-02<br>server-leaf"]
+	end
+
+	subgraph ESLAG [ESLAG]
+		direction LR
+		Ds3000_03["ds3000-03<br>server-leaf"]
+		Sse_C4632_01["sse-c4632-01<br>server-leaf"]
+	end
+
+end
+
+subgraph Servers[ ]
+	direction TB
+	Server_3["server-3"]
+	Server_1["server-1"]
+	Server_2["server-2"]
+	Server_4["server-4"]
+	Server_7["server-7"]
+	Server_8["server-8"]
+	Server_5["server-5"]
+	Server_6["server-6"]
+	Server_9["server-9"]
+end
+
+%% Connections
+
+%% Ds4000_01 -> Leaves
+Ds4000_01 ---|"E1/28↔E1/5<br>E1/29↔E1/6"| Ds3000_03
+Ds4000_01 ---|"E1/28↔E1/7<br>E1/29↔E1/8"| Sse_C4632_01
+Ds4000_01 ---|"E1/28↔E1/3<br>E1/29↔E1/4"| Ds3000_02
+Ds4000_01 ---|"E1/28↔E1/1<br>E1/29↔E1/2"| Ds3000_01
+
+%% Ds4000_02 -> Leaves
+Ds4000_02 ---|"E1/30↔E1/7<br>E1/31↔E1/8"| Sse_C4632_01
+Ds4000_02 ---|"E1/30↔E1/1<br>E1/31↔E1/2"| Ds3000_01
+Ds4000_02 ---|"E1/30↔E1/5<br>E1/31↔E1/6"| Ds3000_03
+Ds4000_02 ---|"E1/31↔E1/4<br>E1/30↔E1/3"| Ds3000_02
+
+%% Leaves -> Servers
+Ds3000_01 ---|"enp2s1↔E1/1/2"| Server_1
+Ds3000_01 ---|"enp2s1↔E1/1/3"| Server_2
+Ds3000_01 ---|"enp2s1↔E1/1/4<br>enp2s2↔E1/2/2"| Server_3
+
+Ds3000_02 ---|"enp2s2↔E1/1/3"| Server_2
+Ds3000_02 ---|"enp2s2↔E1/1/2"| Server_1
+Ds3000_02 ---|"enp2s1↔E1/1/4"| Server_4
+
+Ds3000_03 ---|"enp2s1↔E1/1/3"| Server_5
+Ds3000_03 ---|"enp2s1↔E1/11/2"| Server_6
+Ds3000_03 ---|"enp2s1↔E1/1/1"| Server_7
+Ds3000_03 ---|"enp2s1↔E1/1/2"| Server_8
+
+Sse_C4632_01 ---|"enp2s1↔E1/1/2"| Server_9
+Sse_C4632_01 ---|"enp2s2↔E1/10/4"| Server_6
+Sse_C4632_01 ---|"enp2s2↔E1/1/3"| Server_5
+
+subgraph Legend["Network Connection Types"]
+	direction LR
+	%% Create invisible nodes for the start and end of each line
+	L1(( )) --- |"Fabric Links"| L2(( ))
+	L3(( )) --- |"MCLAG Server Links"| L4(( ))
+	L5(( )) --- |"Bundled Server Links"| L6(( ))
+	L7(( )) --- |"Unbundled Server Links"| L8(( ))
+	L9(( )) --- |"ESLAG Server Links"| L10(( ))
+	P1(( )) --- |"Label Notation: Downstream ↔ Upstream"| P2(( ))
+end
+
+class Ds4000_01,Ds4000_02 spine
+class Ds3000_01,Ds3000_02,Ds3000_03,Sse_C4632_01 leaf
+class Server_3,Server_1,Server_2,Server_4,Server_7,Server_8,Server_5,Server_6,Server_9 server
+class MCLAG_0 mclag
+class ESLAG eslag
+class L1,L2,L3,L4,L5,L6,L7,L8,L9,L10,L11,L12,P1,P2 hidden
+class Legend legendBox
+linkStyle default stroke:#666,stroke-width:2px
+linkStyle 0,1,2,3,4,5,6,7 stroke:#CC3333,stroke-width:4px
+linkStyle 8,9,11,12 stroke:#99CCFF,stroke-width:4px,stroke-dasharray:5 5
+linkStyle 10 stroke:#66CC66,stroke-width:4px
+linkStyle 14,15,19,20 stroke:#CC9900,stroke-width:4px,stroke-dasharray:5 5
+linkStyle 13,16,17,18 stroke:#999999,stroke-width:2px
+linkStyle 21 stroke:#B85450,stroke-width:2px
+linkStyle 22 stroke:#6C8EBF,stroke-width:2px,stroke-dasharray:5 5
+linkStyle 23 stroke:#82B366,stroke-width:2px
+linkStyle 24 stroke:#000000,stroke-width:2px
+linkStyle 25 stroke:#CC9900,stroke-width:2px,stroke-dasharray:5 5
+linkStyle 26 stroke:#FFFFFF
+
+%% Make subgraph containers invisible
+style Spines fill:none,stroke:none
+style Leaves fill:none,stroke:none
+style Servers fill:none,stroke:none
+style Ds4000_01_Group fill:none,stroke:none
+style Ds4000_02_Group fill:none,stroke:none
+```
