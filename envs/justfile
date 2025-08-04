@@ -1,0 +1,41 @@
+set shell := ["bash", "-euo", "pipefail", "-c"]
+
+update-diagrams:
+	@echo "==============================================="
+	@echo "Updating diagrams for env-ci-1.l"
+	@echo "==============================================="
+
+	# Initialize Hedgehog Fabric with the wiring definition
+	hhfab init --dev -f -w env-ci-1.l/wiring.yaml
+
+	# Generate diagrams
+	hhfab diagram --format drawio   --style default --output env-ci-1.l/env-ci-1.l-ci.drawio
+	hhfab diagram --format dot      --output env-ci-1.l/env-ci-1.l-ci.dot
+	hhfab diagram --format mermaid  --output env-ci-1.l/env-ci-1.l-ci.mmd
+
+	# Export Mermaid to Markdown
+	@echo "# env-ci-1.l Network Diagram" > env-ci-1.l/env-ci-1.l-ci.md
+	@echo "" >> env-ci-1.l/env-ci-1.l-ci.md
+	@echo '```mermaid' >> env-ci-1.l/env-ci-1.l-ci.md
+	@cat env-ci-1.l/env-ci-1.l-ci.mmd >> env-ci-1.l/env-ci-1.l-ci.md
+	@echo '```' >> env-ci-1.l/env-ci-1.l-ci.md
+
+	# Export DOT to PNG (if GraphViz is installed)
+	@if command -v dot >/dev/null 2>&1; then \
+		echo "Converting DOT to PNG"; \
+		dot -Tpng env-ci-1.l/env-ci-1.l-ci.dot -o env-ci-1.l/env-ci-1.l-ci.dot.png; \
+	fi
+
+	# Export DRAWIO to PNG (if drawio is installed)
+	@if command -v drawio >/dev/null 2>&1; then \
+		echo "Converting DRAWIO to PNG"; \
+		drawio --export --format png \
+		       --output env-ci-1.l/env-ci-1.l-ci.drawio.png \
+		       env-ci-1.l/env-ci-1.l-ci.drawio; \
+	fi
+
+	@echo ""
+	@echo "All diagrams updated for env-ci-1.l"
+	@echo "Updated files:"
+	@echo "- env-ci-1.l/env-ci-1.l-ci.*"
+
