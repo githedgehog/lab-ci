@@ -1,0 +1,131 @@
+digraph network_topology {
+	graph [rankdir=TB, nodesep=1.5, ranksep=2.5, splines=line, compound=true];
+	node [shape=box, style=rounded, fontname="Arial", fontsize=12, height=0.4, width=1.2];
+	edge [fontname="Arial", fontsize=8, dir=none];
+
+	legend_anchor [shape=none, width=0, height=0, label="", style=""];
+	{rank=source; legend_anchor}
+	subgraph cluster_legend {
+		label="Network Connection Types";
+		labelloc="top";
+		fontsize=14;
+		fontname="Arial";
+		style="rounded";
+		color="transparent";
+		bgcolor="transparent";
+		legend [shape=none, margin=0, label=<
+			<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="4" CELLPADDING="0">
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="red">────</FONT></TD>
+			<TD ALIGN="LEFT">Fabric Links (x2)</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="purple">- - - -</FONT></TD>
+			<TD ALIGN="LEFT">MCLAG Peer Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="purple">────</FONT></TD>
+			<TD ALIGN="LEFT">MCLAG Session Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="purple">────</FONT></TD>
+			<TD ALIGN="LEFT">MCLAG Server Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="green">────</FONT></TD>
+			<TD ALIGN="LEFT">Bundled Server Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="gray">────</FONT></TD>
+			<TD ALIGN="LEFT">Unbundled Server Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="orange">- - - -</FONT></TD>
+			<TD ALIGN="LEFT">ESLAG Server Links</TD>
+			</TR>
+			<TR>
+			<TD ALIGN="LEFT" VALIGN="MIDDLE"><FONT COLOR="goldenrod">────</FONT></TD>
+			<TD ALIGN="LEFT">External Links</TD>
+			</TR>
+			</TABLE>
+		>];
+	}
+	// Connect legend to anchor to position it at the top-left
+	legend_anchor -> legend [style=invis];
+
+	{rank=same; "ds4000-01"; "ds4000-02"; "default"; "other"; }
+	{rank=same; "ds3000-01"; "ds3000-02"; "ds3000-03"; "sse-c4632-01"; }
+	{rank=max; "server-3"; "server-1"; "server-2"; "server-4"; "server-7"; "server-8"; "server-5"; "server-6"; "server-9"; }
+
+	"ds4000-01" [label="ds4000-01
+spine", fillcolor="#f8cecc", style="rounded,filled", color="#b85450"];
+	"ds4000-02" [label="ds4000-02
+spine", fillcolor="#f8cecc", style="rounded,filled", color="#b85450"];
+	"ds3000-01" [label="ds3000-01
+server-leaf", fillcolor="#dae8fc", style="rounded,filled", color="#6c8ebf"];
+	"ds3000-02" [label="ds3000-02
+server-leaf", fillcolor="#dae8fc", style="rounded,filled", color="#6c8ebf"];
+	"ds3000-03" [label="ds3000-03
+server-leaf", fillcolor="#dae8fc", style="rounded,filled", color="#6c8ebf"];
+	"sse-c4632-01" [label="sse-c4632-01
+server-leaf", fillcolor="#dae8fc", style="rounded,filled", color="#6c8ebf"];
+	"server-3" [label="server-3", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-1" [label="server-1", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-2" [label="server-2", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-4" [label="server-4", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-7" [label="server-7", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-8" [label="server-8", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-5" [label="server-5", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-6" [label="server-6", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"server-9" [label="server-9", fillcolor="#d5e8d4", style="filled", color="#82b366"];
+	"default" [label="default", fillcolor="#ffcc99", style="rounded,filled", color="#d79b00"];
+	"other" [label="other", fillcolor="#ffcc99", style="rounded,filled", color="#d79b00"];
+
+	"ds4000-01" -> "ds4000-02" [style=invis, weight=100];
+	"ds3000-01" -> "ds3000-02" [style=invis, weight=100];
+	"ds3000-02" -> "ds3000-03" [style=invis, weight=100];
+	"ds3000-03" -> "sse-c4632-01" [style=invis, weight=100];
+	"server-3" -> "server-1" [style=invis, weight=100];
+	"server-1" -> "server-2" [style=invis, weight=100];
+	"server-2" -> "server-4" [style=invis, weight=100];
+	"server-4" -> "server-7" [style=invis, weight=100];
+	"server-7" -> "server-8" [style=invis, weight=100];
+	"server-8" -> "server-5" [style=invis, weight=100];
+	"server-5" -> "server-6" [style=invis, weight=100];
+	"server-6" -> "server-9" [style=invis, weight=100];
+	"default" -> "other" [style=invis, weight=100];
+
+	edge [style=solid, weight=1];
+	"ds3000-01" -> "ds3000-02" [color="blue", style="dashed", headlabel="E1/32/1", taillabel="E1/32/1", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "ds3000-02" [color="blue", style="dashed", headlabel="E1/32/2", taillabel="E1/32/2", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "ds3000-02" [color="blue", style="dashed", headlabel="E1/32/3", taillabel="E1/32/3", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "ds3000-02" [color="blue", style="dashed", headlabel="E1/32/4", taillabel="E1/32/4", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "server-1" [color="blue", style="dashed", headlabel="enp2s1", taillabel="E1/1/2", labeldistance=2, labelangle=0];
+	"ds3000-02" -> "server-1" [color="blue", style="dashed", headlabel="enp2s2", taillabel="E1/1/2", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "server-2" [color="blue", style="dashed", headlabel="enp2s1", taillabel="E1/1/3", labeldistance=2, labelangle=0];
+	"ds3000-02" -> "server-2" [color="blue", style="dashed", headlabel="enp2s2", taillabel="E1/1/3", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "server-3" [color="green", style="solid", headlabel="enp2s1", taillabel="E1/1/4", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "server-3" [color="green", style="solid", headlabel="enp2s2", taillabel="E1/2/2", labeldistance=2, labelangle=0];
+	"ds3000-02" -> "server-4" [color="gray", style="solid", headlabel="enp2s1", taillabel="E1/1/4", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "server-5" [color="orange", style="dashed", headlabel="enp2s1", taillabel="E1/1/3", labeldistance=2, labelangle=0];
+	"sse-c4632-01" -> "server-5" [color="orange", style="dashed", headlabel="enp2s2", taillabel="E1/1/3", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "server-6" [color="orange", style="dashed", headlabel="enp2s1", taillabel="E1/11/2", labeldistance=2, labelangle=0];
+	"sse-c4632-01" -> "server-6" [color="orange", style="dashed", headlabel="enp2s2", taillabel="E1/10/4", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "server-7" [color="gray", style="solid", headlabel="enp2s1", taillabel="E1/1/1", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "server-8" [color="gray", style="solid", headlabel="enp2s1", taillabel="E1/1/2", labeldistance=2, labelangle=0];
+	"sse-c4632-01" -> "server-9" [color="gray", style="solid", headlabel="enp2s1", taillabel="E1/1/2", labeldistance=2, labelangle=0];
+	"ds3000-01" -> "default" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/1", labeldistance=2, labelangle=0];
+	"ds3000-02" -> "default" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/1", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "default" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/4", labeldistance=2, labelangle=0];
+	"ds3000-03" -> "other" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/4", labeldistance=2, labelangle=0];
+	"sse-c4632-01" -> "default" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/1", labeldistance=2, labelangle=0];
+	"sse-c4632-01" -> "other" [color="goldenrod", style="solid", headlabel="", taillabel="E1/1/1", labeldistance=2, labelangle=0];
+	"ds4000-01" -> "ds3000-01" [color="red", style="solid", headlabel="E1/28,E1/29", taillabel="E1/1,E1/2", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-01" -> "ds3000-02" [color="red", style="solid", headlabel="E1/28,E1/29", taillabel="E1/3,E1/4", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-01" -> "ds3000-03" [color="red", style="solid", headlabel="E1/28,E1/29", taillabel="E1/5,E1/6", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-01" -> "sse-c4632-01" [color="red", style="solid", headlabel="E1/28,E1/29", taillabel="E1/7,E1/8", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-02" -> "ds3000-01" [color="red", style="solid", headlabel="E1/30,E1/31", taillabel="E1/1,E1/2", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-02" -> "ds3000-02" [color="red", style="solid", headlabel="E1/31,E1/30", taillabel="E1/4,E1/3", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-02" -> "ds3000-03" [color="red", style="solid", headlabel="E1/30,E1/31", taillabel="E1/5,E1/6", labeldistance=2, labelangle=0, penwidth=3];
+	"ds4000-02" -> "sse-c4632-01" [color="red", style="solid", headlabel="E1/30,E1/31", taillabel="E1/7,E1/8", labeldistance=2, labelangle=0, penwidth=3];
+}
