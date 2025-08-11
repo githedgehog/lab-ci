@@ -1,24 +1,118 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-update-diagrams:
-	@echo "==============================================="
-	@echo "Updating diagrams for env-ci-1.l"
-	@echo "==============================================="
+# Puppeteer/Chrome configuration for mermaid-cli (mmdc)
+export PUPPETEER_EXECUTABLE_PATH := env_var_or_default('HOME', '') + "/.cache/puppeteer/chrome/linux-131.0.6778.204/chrome-linux64/chrome"
 
+default: update-diagrams
+
+# env-ci-1.l with actual wiring files (hardware lab)
+update-diagrams-env-ci-1-spine-leaf:
 	@echo "Generating diagrams for env-ci-1.l: spine-leaf"
 	mkdir -p env-ci-1.l/diagrams/spine-leaf
 	hhfab init --dev -f -w env-ci-1.l/wiring.yaml
 	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio
 	hhfab diagram --format dot    --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot
 	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid
-	if command -v dot >/dev/null; then dot -Tpng env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot.png; fi
-	if command -v drawio >/dev/null; then drawio --export --format png --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio.png env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio; fi
-	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-mermaid.png; fi
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.default.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.cisco.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.hedgehog.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed (Chrome missing for Puppeteer? Run: npx puppeteer browsers install chrome@131.0.6778.204)"; fi
+	@echo "COMPLETED: env-ci-1.l spine-leaf diagrams"
 
-	@echo ""
-	@echo "All diagrams updated for env-ci-1.l"
-	@echo "Updated files in env-ci-1.l/diagrams/spine-leaf/:"
-	@echo "- Source files: env-ci-1-spine-leaf.{drawio,dot,mermaid}"
-	@echo "- PNG files: env-ci-1-spine-leaf.{dot.png,drawio.png,*-mermaid.png}"
+update-diagrams-env-ci-1-gateway:
+	@echo "Generating diagrams for env-ci-1.l: spine-leaf-gateway"
+	mkdir -p env-ci-1.l/diagrams/spine-leaf
+	hhfab init --dev -f --gw -w env-ci-1.l/wiring.yaml -w env-ci-1.l/wiring-gateway.yaml
+	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio
+	hhfab diagram --format dot    --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot
+	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.default.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.cisco.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.hedgehog.drawio.svg env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid -o env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed (Chrome missing for Puppeteer? Run: npx puppeteer browsers install chrome@131.0.6778.204)"; fi
+	@echo "COMPLETED: env-ci-1.l spine-leaf-gateway diagrams"
 
-default: update-diagrams
+# vlab auto-generated topologies (matches CI configurations)
+update-diagrams-vlab-spine-leaf:
+	@echo "Generating diagrams for vlab: spine-leaf"
+	mkdir -p env-ci-1.l/diagrams/vlab-spine-leaf
+	hhfab init --dev -f
+	hhfab vlab gen -v
+	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf-hedgehog.drawio
+	hhfab diagram --format dot    --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.dot
+	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.mermaid
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.dot -o env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.default.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.cisco.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.hedgehog.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.mermaid -o env-ci-1.l/diagrams/vlab-spine-leaf/vlab-spine-leaf.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed"; fi
+	@echo "COMPLETED: vlab spine-leaf diagrams"
+
+update-diagrams-vlab-spine-leaf-gateway:
+	@echo "Generating diagrams for vlab: spine-leaf-gateway"
+	mkdir -p env-ci-1.l/diagrams/vlab-spine-leaf-gateway
+	hhfab init --dev -f --gw
+	hhfab vlab gen -v
+	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway-hedgehog.drawio
+	hhfab diagram --format dot    --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.dot
+	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.mermaid
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.dot -o env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.default.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.cisco.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.hedgehog.drawio.svg env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.mermaid -o env-ci-1.l/diagrams/vlab-spine-leaf-gateway/vlab-spine-leaf-gateway.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed"; fi
+	@echo "COMPLETED: vlab spine-leaf-gateway diagrams"
+
+update-diagrams-vlab-mesh:
+	@echo "Generating diagrams for vlab: mesh"
+	mkdir -p env-ci-1.l/diagrams/vlab-mesh
+	hhfab init --dev -f
+	hhfab vlab gen -v --mesh-links-count=3
+	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh-hedgehog.drawio
+	hhfab diagram --format dot    --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.dot
+	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.mermaid
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.dot -o env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.default.drawio.svg env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.cisco.drawio.svg env-ci-1.l/diagrams/vlab-mesh/vlab-mesh-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.hedgehog.drawio.svg env-ci-1.l/diagrams/vlab-mesh/vlab-mesh-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.mermaid -o env-ci-1.l/diagrams/vlab-mesh/vlab-mesh.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed"; fi
+	@echo "COMPLETED: vlab mesh diagrams"
+
+update-diagrams-vlab-mesh-gateway:
+	@echo "Generating diagrams for vlab: mesh-gateway"
+	mkdir -p env-ci-1.l/diagrams/vlab-mesh-gateway
+	hhfab init --dev -f --gw
+	hhfab vlab gen -v --mesh-links-count=3
+	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.drawio
+	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway-cisco.drawio
+	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway-hedgehog.drawio
+	hhfab diagram --format dot    --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.dot
+	hhfab diagram --format mermaid --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.mermaid
+	if command -v dot >/dev/null; then dot -Tsvg -Gbgcolor=transparent env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.dot -o env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.dot.svg; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.default.drawio.svg env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.cisco.drawio.svg env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway-cisco.drawio; fi
+	if command -v drawio >/dev/null; then drawio --export --format svg --output env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.hedgehog.drawio.svg env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway-hedgehog.drawio; fi
+	if command -v mmdc >/dev/null; then mmdc -i env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.mermaid -o env-ci-1.l/diagrams/vlab-mesh-gateway/vlab-mesh-gateway.mermaid.svg -t default -b transparent -p ~/lab/envs/puppeteer-config.json || echo "Warning: mmdc failed"; fi
+	@echo "COMPLETED: vlab mesh-gateway diagrams"
+
+update-diagrams: update-diagrams-env-ci-1-gateway
+	@echo "All environments completed, creating HTML viewer..."
+	@just create-html
+
+create-html: _check-go
+	@go run ${FABRICATOR_PATH:-../../fabricator}/hack/generate_viewer.go --dirs "env-ci-1.l/diagrams" --output-dir . --output-file diagram-viewer.html
+
+_check-go:
+	@command -v go >/dev/null 2>&1 || (echo "Go not installed. Install from https://golang.org" && exit 1)
