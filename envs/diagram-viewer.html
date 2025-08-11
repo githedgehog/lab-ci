@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦔 Hedgehog Network Diagrams</title>
+    <style>/**
+ * Copyright 2025 Hedgehog
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+:root[data-theme="light"] {
+    --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-card: white;
+    --bg-glass: rgba(255,255,255,0.1);
+    --bg-glass-strong: rgba(255,255,255,0.95);
+    --text-primary: #2c3e50;
+    --text-light: white;
+    --text-muted: #666;
+    --text-glass: rgba(255,255,255,0.8);
+    --border-glass: rgba(255,255,255,0.2);
+    --border-light: rgba(44, 62, 80, 0.1);
+    --shadow-light: 0 4px 16px rgba(0,0,0,0.1);
+    --shadow-hover: 0 6px 24px rgba(0,0,0,0.15);
+    --accent-color: #667eea;
+    --accent-bg: rgba(102, 126, 234, 0.1);
+    --accent-border: rgba(102, 126, 234, 0.3);
+    --placeholder-bg: #f8f9fa;
+}
+
+:root[data-theme="dark"] {
+    --bg-primary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    --bg-card: #1a1a1a;
+    --bg-glass: rgba(0,0,0,0.3);
+    --bg-glass-strong: rgba(26,26,26,0.95);
+    --text-primary: #ecf0f1;
+    --text-light: #ecf0f1;
+    --text-muted: #bdc3c7;
+    --text-glass: rgba(236,240,241,0.8);
+    --border-glass: rgba(236,240,241,0.2);
+    --border-light: rgba(236, 240, 241, 0.1);
+    --shadow-light: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-hover: 0 6px 24px rgba(0,0,0,0.4);
+    --accent-color: #3498db;
+    --accent-bg: rgba(52, 152, 219, 0.1);
+    --accent-border: rgba(52, 152, 219, 0.3);
+    --placeholder-bg: #2c3e50;
+}
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    background: var(--bg-primary);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+.header {
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-glass);
+    padding: 12px 0;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1 {
+    color: var(--text-light);
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    color: var(--text-glass);
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.header-stats {
+    display: flex;
+    gap: 15px;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.stat {
+    background: var(--bg-glass);
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.85em;
+}
+
+.stat-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.control-btn {
+    background: var(--bg-glass);
+    color: var(--text-light);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.control-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-1px);
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tab {
+    background: var(--bg-glass);
+    color: var(--text-light);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85em;
+}
+
+.tab.active {
+    background: var(--bg-card);
+    color: var(--accent-color);
+}
+
+.tab:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.main-layout {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px 15px;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.content-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.toc {
+    background: var(--bg-glass-strong);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: var(--shadow-light);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 20px;
+    margin-top: 0;
+}
+
+.toc h3 {
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc li {
+    margin: 0 0 4px 0;
+}
+
+.toc a {
+    color: var(--accent-color);
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 4px;
+    display: block;
+    transition: all 0.2s ease;
+    border-left: 2px solid transparent;
+    font-size: 0.85em;
+    cursor: pointer;
+}
+
+.toc a:hover {
+    background: var(--accent-bg);
+    border-left-color: var(--accent-color);
+}
+
+.toc a.active {
+    background: rgba(102, 126, 234, 0.15);
+    border-left-color: var(--accent-color);
+    font-weight: 500;
+}
+
+.diagram-container {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 0 0 15px 0;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+.style-content .diagram-container:first-child,
+.tab-content .diagram-container:first-child {
+    margin-top: 0;
+}
+
+.diagram-container:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+}
+
+.diagram-container.hidden {
+    display: none;
+}
+
+.diagram-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+    margin-top: 0;
+}
+
+.diagram-title {
+    color: var(--text-primary);
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.diagram-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.style-selector {
+    display: flex;
+    gap: 4px;
+}
+
+.style-btn {
+    background: var(--accent-bg);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-border);
+    padding: 3px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.style-btn.active {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.style-btn:hover {
+    background: var(--accent-bg);
+}
+
+.diagram {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.svg-container {
+    position: relative;
+    border-radius: 8px;
+    background: var(--placeholder-bg);
+    width: 100%;
+    max-width: 100%;
+}
+
+[data-theme="light"] .svg-diagram {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    display: block;
+    margin: 0 auto;
+    transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] .svg-diagram {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    display: block;
+    margin: 0 auto;
+    filter:
+        invert(1)
+        hue-rotate(180deg)
+        brightness(1.1)
+        contrast(0.95)
+        saturate(0.9);
+    transition: filter 0.3s ease;
+}
+
+[data-theme="dark"] #graphviz-content .svg-diagram {
+    filter:
+        invert(1)
+        hue-rotate(180deg)
+        brightness(1.05)
+        contrast(0.9)
+        saturate(0.85);
+}
+
+[data-theme="dark"] #mermaid-content .svg-diagram {
+    filter:
+        invert(1)
+        hue-rotate(180deg)
+        brightness(1.15)
+        contrast(1.0)
+        saturate(0.95);
+}
+
+[data-theme="dark"] #drawio-content .svg-diagram {
+    filter:
+        invert(1)
+        hue-rotate(180deg)
+        brightness(1.1)
+        contrast(0.92)
+        saturate(0.88);
+}
+
+#mermaid-content .svg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mermaid-content .svg-diagram {
+    max-width: 95%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.lazy-placeholder {
+    background: var(--placeholder-bg);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    position: relative;
+}
+
+.loading-spinner {
+    color: var(--text-muted);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-spinner::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent-border);
+    border-top: 2px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.svg-tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.svg-tooltip.visible {
+    opacity: 1;
+}
+
+.tab-content {
+    display: none;
+    margin-top: 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.style-content {
+    display: none;
+    margin-top: 0;
+}
+
+.style-content.active {
+    display: block;
+}
+
+.no-content {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .header-stats {
+        flex-wrap: wrap;
+    }
+
+    .main-layout {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .toc {
+        position: static;
+        margin-top: 0;
+    }
+
+    .diagram-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    #mermaid-content .svg-diagram {
+        max-width: 100%;
+        max-height: 60vh;
+    }
+}
+
+@media (min-width: 1400px) {
+    #mermaid-content .svg-diagram {
+        max-height: 85vh;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>🦔 Hedgehog Network Diagrams</h1>
+                <p class="subtitle">Network Topology Visualizations</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat"><span class="stat-number">1</span><span class="stat-label">Topologies</span></div>
+                <div class="stat"><span class="stat-number">3</span><span class="stat-label">Formats</span></div>
+                <div class="stat"><span class="stat-number">2025-08-11</span><span class="stat-label">Generated</span></div>
+            </div>
+            <div class="header-controls">
+                <button id="theme-toggle" class="control-btn">🌙 Dark</button>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('drawio')">🎨 DrawIO</button>
+            <button class="tab" onclick="showTab('graphviz')">🔗 Graphviz</button>
+            <button class="tab" onclick="showTab('mermaid')">📊 Mermaid</button>
+        </div>
+    </div>
+    <div class="main-layout">
+        <div class="sidebar">
+            
+            <div id="drawio-toc" class="toc active" style="display: block;">
+                <h3>🎨 DrawIO Diagrams</h3>
+                <ul>
+                    
+                    <li><a onclick="showDrawIODiagram('env-ci-1.l-spine-leaf')">env-ci-1.l: Spine Leaf</a></li>
+                    
+                </ul>
+            </div>
+            
+            
+            <div id="graphviz-toc" class="toc" style="display: none;">
+                <h3>🔗 Graphviz Diagrams</h3>
+                <ul>
+                    
+                    <li><a onclick="showGraphvizDiagram('env-ci-1.l-spine-leaf')">env-ci-1.l: Spine Leaf</a></li>
+                    
+                </ul>
+            </div>
+            
+            
+            <div id="mermaid-toc" class="toc" style="display: none;">
+                <h3>📊 Mermaid Diagrams</h3>
+                <ul>
+                    
+                    <li><a onclick="showMermaidDiagram('env-ci-1.l-spine-leaf')">env-ci-1.l: Spine Leaf</a></li>
+                    
+                </ul>
+            </div>
+            
+        </div>
+        <div class="content-area">
+            
+            <div id="drawio-content" class="tab-content active">
+                
+                <div id="drawio-style-cisco" class="style-content">
+                    
+                        
+                        <div class="diagram-container" id="drawio-diagram-env-ci-1.l-spine-leaf" data-diagram="env-ci-1.l-spine-leaf" data-style="cisco">
+                            <div class="diagram-header">
+                                <h2 class="diagram-title">env-ci-1.l: Spine Leaf</h2>
+                                <div class="diagram-controls">
+                                    <div class="style-selector">
+                                        <button class="style-btn" onclick="showDrawIOStyle('default')">🏠 Default</button>
+                                        <button class="style-btn" onclick="showDrawIOStyle('hedgehog')">🦔 Hedgehog</button>
+                                        <button class="style-btn active" onclick="showDrawIOStyle('cisco')">🔧 Cisco</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="diagram">
+                                
+                                <div class="svg-container">
+                                    
+                                    <div class="lazy-placeholder" data-src="env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.cisco.drawio.svg" data-alt="env-ci-1.l: Spine Leaf Diagram">
+                                        <div class="loading-spinner">Loading diagram...</div>
+                                    </div>
+                                    
+                                    <div class="svg-tooltip" id="tooltip-env-ci-1.l-spine-leaf"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+                
+                <div id="drawio-style-default" class="style-content active">
+                    
+                        
+                        <div class="diagram-container" id="drawio-diagram-env-ci-1.l-spine-leaf" data-diagram="env-ci-1.l-spine-leaf" data-style="default">
+                            <div class="diagram-header">
+                                <h2 class="diagram-title">env-ci-1.l: Spine Leaf</h2>
+                                <div class="diagram-controls">
+                                    <div class="style-selector">
+                                        <button class="style-btn active" onclick="showDrawIOStyle('default')">🏠 Default</button>
+                                        <button class="style-btn" onclick="showDrawIOStyle('hedgehog')">🦔 Hedgehog</button>
+                                        <button class="style-btn" onclick="showDrawIOStyle('cisco')">🔧 Cisco</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="diagram">
+                                
+                                <div class="svg-container">
+                                    
+                                    <div class="lazy-placeholder" data-src="env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.default.drawio.svg" data-alt="env-ci-1.l: Spine Leaf Diagram">
+                                        <div class="loading-spinner">Loading diagram...</div>
+                                    </div>
+                                    
+                                    <div class="svg-tooltip" id="tooltip-env-ci-1.l-spine-leaf"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+                
+                <div id="drawio-style-hedgehog" class="style-content">
+                    
+                        
+                        <div class="diagram-container" id="drawio-diagram-env-ci-1.l-spine-leaf" data-diagram="env-ci-1.l-spine-leaf" data-style="hedgehog">
+                            <div class="diagram-header">
+                                <h2 class="diagram-title">env-ci-1.l: Spine Leaf</h2>
+                                <div class="diagram-controls">
+                                    <div class="style-selector">
+                                        <button class="style-btn" onclick="showDrawIOStyle('default')">🏠 Default</button>
+                                        <button class="style-btn active" onclick="showDrawIOStyle('hedgehog')">🦔 Hedgehog</button>
+                                        <button class="style-btn" onclick="showDrawIOStyle('cisco')">🔧 Cisco</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="diagram">
+                                
+                                <div class="svg-container">
+                                    
+                                    <div class="lazy-placeholder" data-src="env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.hedgehog.drawio.svg" data-alt="env-ci-1.l: Spine Leaf Diagram">
+                                        <div class="loading-spinner">Loading diagram...</div>
+                                    </div>
+                                    
+                                    <div class="svg-tooltip" id="tooltip-env-ci-1.l-spine-leaf"></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+                
+            </div>
+            
+
+            
+            <div id="graphviz-content" class="tab-content">
+                
+                    
+                    <div class="diagram-container" id="graphviz-diagram-env-ci-1.l-spine-leaf" data-diagram="env-ci-1.l-spine-leaf">
+                        <div class="diagram-header">
+                            <h2 class="diagram-title">env-ci-1.l: Spine Leaf</h2>
+                        </div>
+                        <div class="diagram">
+                            
+                            <div class="svg-container">
+                                
+                                <div class="lazy-placeholder" data-src="env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.dot.svg" data-alt="env-ci-1.l: Spine Leaf Diagram">
+                                    <div class="loading-spinner">Loading diagram...</div>
+                                </div>
+                                
+                                <div class="svg-tooltip" id="tooltip-env-ci-1.l-spine-leaf"></div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                
+            </div>
+            
+
+            
+            <div id="mermaid-content" class="tab-content">
+                
+                    
+                    <div class="diagram-container" id="mermaid-diagram-env-ci-1.l-spine-leaf" data-diagram="env-ci-1.l-spine-leaf">
+                        <div class="diagram-header">
+                            <h2 class="diagram-title">env-ci-1.l: Spine Leaf</h2>
+                        </div>
+                        <div class="diagram">
+                            
+                            <div class="svg-container">
+                                
+                                <div class="lazy-placeholder" data-src="env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.mermaid.svg" data-alt="env-ci-1.l: Spine Leaf Diagram">
+                                    <div class="loading-spinner">Loading diagram...</div>
+                                </div>
+                                
+                                <div class="svg-tooltip" id="tooltip-env-ci-1.l-spine-leaf"></div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                
+            </div>
+            
+        </div>
+    </div>
+
+    <script>/**
+ * Copyright 2025 Hedgehog
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+let currentDrawIODiagram = null;
+let currentGraphvizDiagram = null;
+let currentMermaidDiagram = null;
+let currentTopology = null;
+let currentTheme = 'light';
+let lazyLoadObserver = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initializeLazyLoading();
+    initializeDiagrams();
+    setupEventListeners();
+});
+
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('hedgehog-diagram-theme') || 'light';
+    setTheme(savedTheme);
+
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+}
+
+function setTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+
+    const isDark = theme === 'dark';
+    const buttonText = isDark ? '☀️ Light' : '🌙 Dark';
+
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) themeToggle.textContent = buttonText;
+
+    setTimeout(() => {
+        applyThemeToSVGs(theme);
+    }, 100);
+
+    try {
+        localStorage.setItem('hedgehog-diagram-theme', theme);
+    } catch (e) {
+        // Ignore localStorage errors
+    }
+}
+
+function toggleTheme() {
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+}
+
+function applyThemeToSVGs(theme) {
+    const svgElements = document.querySelectorAll('.svg-diagram');
+    svgElements.forEach(svg => {
+        if (theme === 'dark') {
+            svg.setAttribute('data-dark-mode', 'true');
+        } else {
+            svg.removeAttribute('data-dark-mode');
+        }
+    });
+}
+
+function initializeLazyLoading() {
+    if ('IntersectionObserver' in window) {
+        lazyLoadObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    loadDiagram(entry.target);
+                    lazyLoadObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+
+        document.querySelectorAll('.lazy-placeholder').forEach(function(placeholder) {
+            lazyLoadObserver.observe(placeholder);
+        });
+    } else {
+        document.querySelectorAll('.lazy-placeholder').forEach(loadDiagram);
+    }
+}
+
+function loadDiagram(placeholder) {
+    const src = placeholder.getAttribute('data-src');
+    const alt = placeholder.getAttribute('data-alt');
+
+    if (!src) return;
+
+    let element;
+    if (src.includes('mermaid') || src.includes('drawio')) {
+        element = document.createElement('object');
+        element.data = src;
+        element.type = 'image/svg+xml';
+        element.className = 'svg-diagram';
+
+        const fallback = document.createElement('img');
+        fallback.src = src;
+        fallback.alt = alt;
+        element.appendChild(fallback);
+
+        element.onload = function() {
+            setTimeout(() => {
+                applyThemeToSVGs(currentTheme);
+            }, 100);
+        };
+
+        element.onerror = function() {
+            console.warn('Failed to load SVG object:', src);
+            const imgElement = document.createElement('img');
+            imgElement.src = src;
+            imgElement.alt = alt;
+            imgElement.className = 'svg-diagram';
+            imgElement.style.opacity = '0';
+            imgElement.style.transition = 'opacity 0.3s ease';
+            imgElement.onload = function() {
+                this.style.opacity = '1';
+                applyThemeToSVGs(currentTheme);
+            };
+            placeholder.parentNode.replaceChild(imgElement, element);
+        };
+    } else {
+        element = document.createElement('img');
+        element.src = src;
+        element.alt = alt;
+        element.className = 'svg-diagram';
+        element.style.opacity = '0';
+        element.style.transition = 'opacity 0.3s ease';
+        element.onload = function() {
+            this.style.opacity = '1';
+            applyThemeToSVGs(currentTheme);
+        };
+        element.onerror = function() {
+            console.warn('Failed to load SVG image:', src);
+            this.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'no-content';
+            errorDiv.textContent = 'Failed to load diagram: ' + alt;
+            this.parentElement.appendChild(errorDiv);
+        };
+    }
+
+    placeholder.parentNode.replaceChild(element, placeholder);
+
+    if (src.includes('mermaid')) {
+        addMermaidZoom(element);
+    }
+}
+
+function addMermaidZoom(element) {
+    if (element.hasAttribute('data-zoom-handler')) return;
+
+    element.setAttribute('data-zoom-handler', 'true');
+    element.style.cursor = 'zoom-in';
+    element.onclick = function() {
+        if (this.style.maxWidth === 'none') {
+            this.style.maxWidth = '95%';
+            this.style.maxHeight = '80vh';
+            this.style.cursor = 'zoom-in';
+            this.parentElement.style.overflow = 'auto';
+        } else {
+            this.style.maxWidth = 'none';
+            this.style.maxHeight = 'none';
+            this.style.cursor = 'zoom-out';
+            this.parentElement.style.overflow = 'auto';
+        }
+    };
+}
+
+function initializeDiagrams() {
+    document.querySelectorAll('.diagram-container').forEach(container => {
+        container.classList.add('hidden');
+    });
+
+    setTimeout(function() {
+        const activeTab = document.querySelector('.tab.active');
+        if (activeTab) {
+            if (activeTab.textContent.includes('DrawIO')) {
+                const firstLink = document.querySelector('#drawio-toc a');
+                if (firstLink) {
+                    const match = firstLink.getAttribute('onclick').match(/showDrawIODiagram\('([^']+)'\)/);
+                    if (match) showDrawIODiagram(match[1]);
+                }
+            } else if (activeTab.textContent.includes('Graphviz')) {
+                const firstLink = document.querySelector('#graphviz-toc a');
+                if (firstLink) {
+                    const match = firstLink.getAttribute('onclick').match(/showGraphvizDiagram\('([^']+)'\)/);
+                    if (match) showGraphvizDiagram(match[1]);
+                }
+            } else if (activeTab.textContent.includes('Mermaid')) {
+                const firstLink = document.querySelector('#mermaid-toc a');
+                if (firstLink) {
+                    const match = firstLink.getAttribute('onclick').match(/showMermaidDiagram\('([^']+)'\)/);
+                    if (match) showMermaidDiagram(match[1]);
+                }
+            }
+        }
+    }, 100);
+}
+
+function setupEventListeners() {
+    document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        switch(e.key) {
+            case 'ArrowLeft':
+                navigateDiagram(-1);
+                e.preventDefault();
+                break;
+            case 'ArrowRight':
+                navigateDiagram(1);
+                e.preventDefault();
+                break;
+        }
+    });
+}
+
+function navigateDiagram(direction) {
+    const activeTab = document.querySelector('.tab.active');
+    if (!activeTab) return;
+
+    let currentIndex = -1;
+    let links = [];
+
+    if (activeTab.textContent.includes('DrawIO')) {
+        links = Array.from(document.querySelectorAll('#drawio-toc a'));
+        const activeLink = document.querySelector('#drawio-toc a.active');
+        if (activeLink) {
+            currentIndex = links.indexOf(activeLink);
+        } else {
+            const currentName = currentDrawIODiagram;
+            currentIndex = links.findIndex(link =>
+                link.getAttribute('onclick').includes(`'${currentName}'`)
+            );
+        }
+    } else if (activeTab.textContent.includes('Graphviz')) {
+        links = Array.from(document.querySelectorAll('#graphviz-toc a'));
+        const activeLink = document.querySelector('#graphviz-toc a.active');
+        if (activeLink) {
+            currentIndex = links.indexOf(activeLink);
+        } else {
+            const currentName = currentGraphvizDiagram;
+            currentIndex = links.findIndex(link =>
+                link.getAttribute('onclick').includes(`'${currentName}'`)
+            );
+        }
+    } else if (activeTab.textContent.includes('Mermaid')) {
+        links = Array.from(document.querySelectorAll('#mermaid-toc a'));
+        const activeLink = document.querySelector('#mermaid-toc a.active');
+        if (activeLink) {
+            currentIndex = links.indexOf(activeLink);
+        } else {
+            const currentName = currentMermaidDiagram;
+            currentIndex = links.findIndex(link =>
+                link.getAttribute('onclick').includes(`'${currentName}'`)
+            );
+        }
+    }
+
+    if (links.length === 0) return;
+
+    const nextIndex = (currentIndex + direction + links.length) % links.length;
+    links[nextIndex].click();
+}
+
+function showTab(tabName) {
+    document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+    document.getElementById(tabName + "-content").classList.add("active");
+    event.target.classList.add("active");
+
+    document.querySelectorAll(".sidebar .toc").forEach(toc => {
+        toc.classList.remove("active");
+        toc.style.display = "none";
+    });
+
+    const activeToc = document.getElementById(tabName + "-toc");
+    if (activeToc) {
+        activeToc.classList.add("active");
+        activeToc.style.display = "block";
+    }
+
+    let diagramToShow = currentTopology;
+
+    if (tabName === 'drawio') {
+        if (diagramToShow) {
+            const targetLink = document.querySelector('#drawio-toc a[onclick*="' + diagramToShow + '"]');
+            if (targetLink) {
+                showDrawIODiagram(diagramToShow);
+                return;
+            }
+        }
+        const firstLink = document.querySelector('#drawio-toc a');
+        if (firstLink) {
+            const match = firstLink.getAttribute('onclick').match(/showDrawIODiagram\('([^']+)'\)/);
+            if (match) showDrawIODiagram(match[1]);
+        }
+    } else if (tabName === 'graphviz') {
+        if (diagramToShow) {
+            const targetLink = document.querySelector('#graphviz-toc a[onclick*="' + diagramToShow + '"]');
+            if (targetLink) {
+                showGraphvizDiagram(diagramToShow);
+                return;
+            }
+        }
+        const firstLink = document.querySelector('#graphviz-toc a');
+        if (firstLink) {
+            const match = firstLink.getAttribute('onclick').match(/showGraphvizDiagram\('([^']+)'\)/);
+            if (match) showGraphvizDiagram(match[1]);
+        }
+    } else if (tabName === 'mermaid') {
+        if (diagramToShow) {
+            const targetLink = document.querySelector('#mermaid-toc a[onclick*="' + diagramToShow + '"]');
+            if (targetLink) {
+                showMermaidDiagram(diagramToShow);
+                return;
+            }
+        }
+        const firstLink = document.querySelector('#mermaid-toc a');
+        if (firstLink) {
+            const match = firstLink.getAttribute('onclick').match(/showMermaidDiagram\('([^']+)'\)/);
+            if (match) showMermaidDiagram(match[1]);
+        }
+    }
+
+    setTimeout(() => applyThemeToSVGs(currentTheme), 100);
+}
+
+function showDrawIOStyle(style) {
+    document.querySelectorAll(".style-content").forEach(content => content.classList.remove("active"));
+    const newStyleContent = document.getElementById("drawio-style-" + style);
+    if (newStyleContent) {
+        newStyleContent.classList.add("active");
+    }
+
+    document.querySelectorAll('.style-selector').forEach(selector => {
+        selector.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = selector.querySelector('[onclick*="' + style + '"]');
+        if (activeBtn) activeBtn.classList.add('active');
+    });
+
+    if (currentDrawIODiagram && newStyleContent) {
+        const diagramContainer = newStyleContent.querySelector('[data-diagram="' + currentDrawIODiagram + '"]');
+        if (diagramContainer) {
+            newStyleContent.querySelectorAll('.diagram-container').forEach(container => {
+                container.classList.add('hidden');
+            });
+            diagramContainer.classList.remove('hidden');
+        } else {
+            const firstDiagram = newStyleContent.querySelector('.diagram-container:not(.no-content)');
+            if (firstDiagram) {
+                newStyleContent.querySelectorAll('.diagram-container').forEach(container => {
+                    container.classList.add('hidden');
+                });
+                firstDiagram.classList.remove('hidden');
+                currentDrawIODiagram = firstDiagram.getAttribute('data-diagram');
+                currentTopology = currentDrawIODiagram;
+            }
+        }
+    } else if (newStyleContent) {
+        const firstDiagram = newStyleContent.querySelector('.diagram-container:not(.no-content)');
+        if (firstDiagram) {
+            newStyleContent.querySelectorAll('.diagram-container').forEach(container => {
+                container.classList.add('hidden');
+            });
+            firstDiagram.classList.remove('hidden');
+            currentDrawIODiagram = firstDiagram.getAttribute('data-diagram');
+            currentTopology = currentDrawIODiagram;
+
+            document.querySelectorAll('#drawio-toc a').forEach(a => a.classList.remove('active'));
+            const tocLink = document.querySelector('#drawio-toc a[onclick*="' + currentDrawIODiagram + '"]');
+            if (tocLink) tocLink.classList.add('active');
+        }
+    }
+
+    setTimeout(() => applyThemeToSVGs(currentTheme), 100);
+}
+
+function showDrawIODiagram(diagramName) {
+    const activeStyle = document.querySelector('.style-content.active');
+    if (activeStyle) {
+        activeStyle.querySelectorAll('.diagram-container').forEach(container => {
+            container.classList.add('hidden');
+        });
+
+        const diagramContainer = activeStyle.querySelector('[data-diagram="' + diagramName + '"]');
+        if (diagramContainer) {
+            diagramContainer.classList.remove('hidden');
+            currentDrawIODiagram = diagramName;
+            currentTopology = diagramName;
+
+            document.querySelectorAll('#drawio-toc a').forEach(a => a.classList.remove('active'));
+            const tocLink = document.querySelector('#drawio-toc a[onclick*="' + diagramName + '"]');
+            if (tocLink) tocLink.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => applyThemeToSVGs(currentTheme), 100);
+        }
+    }
+}
+
+function showGraphvizDiagram(diagramName) {
+    document.querySelectorAll('#graphviz-content .diagram-container').forEach(container => {
+        container.classList.add('hidden');
+    });
+
+    const diagramContainer = document.querySelector('#graphviz-content [data-diagram="' + diagramName + '"]');
+    if (diagramContainer) {
+        diagramContainer.classList.remove('hidden');
+        currentGraphvizDiagram = diagramName;
+        currentTopology = diagramName;
+
+        document.querySelectorAll('#graphviz-toc a').forEach(a => a.classList.remove('active'));
+        const tocLink = document.querySelector('#graphviz-toc a[onclick*="' + diagramName + '"]');
+        if (tocLink) tocLink.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(() => applyThemeToSVGs(currentTheme), 100);
+    }
+}
+
+function showMermaidDiagram(diagramName) {
+    document.querySelectorAll('#mermaid-content .diagram-container').forEach(container => {
+        container.classList.add('hidden');
+    });
+
+    const diagramContainer = document.querySelector('#mermaid-content [data-diagram="' + diagramName + '"]');
+    if (diagramContainer) {
+        diagramContainer.classList.remove('hidden');
+        currentMermaidDiagram = diagramName;
+        currentTopology = diagramName;
+
+        const img = diagramContainer.querySelector('.svg-diagram');
+        if (img && !img.hasAttribute('data-zoom-handler')) {
+            addMermaidZoom(img);
+        }
+
+        document.querySelectorAll('#mermaid-toc a').forEach(a => a.classList.remove('active'));
+        const tocLink = document.querySelector('#mermaid-toc a[onclick*="' + diagramName + '"]');
+        if (tocLink) tocLink.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        setTimeout(() => applyThemeToSVGs(currentTheme), 100);
+    }
+}
+
+function showSVGTooltip(diagramName, content, x, y) {
+    const tooltip = document.getElementById('tooltip-' + diagramName);
+    if (tooltip) {
+        tooltip.textContent = content;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
+        tooltip.classList.add('visible');
+    }
+}
+
+function hideSVGTooltip(diagramName) {
+    const tooltip = document.getElementById('tooltip-' + diagramName);
+    if (tooltip) {
+        tooltip.classList.remove('visible');
+    }
+}
+
+window.showTooltip = showSVGTooltip;
+window.hideTooltip = hideSVGTooltip;
+</script>
+</body>
+</html>
