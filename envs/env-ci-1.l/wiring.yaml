@@ -74,8 +74,8 @@ metadata:
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/4
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:0d:00.1
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:0d:00.0
-    link.hhfab.githedgehog.com/E1_1_4: pci@0000:07:00.1
-    link.hhfab.githedgehog.com/E1_2_2: pci@0000:83:00.1 # not used
+    # link.hhfab.githedgehog.com/E1_1_4: pci@0000:07:00.1
+    # link.hhfab.githedgehog.com/E1_2_2: pci@0000:83:00.1 # not used
   name: ds3000-02
 spec:
   boot:
@@ -171,6 +171,7 @@ metadata:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8911
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/1
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:83:00.1
   name: ds4000-01
 spec:
   boot:
@@ -187,6 +188,7 @@ spec:
     E1/6: 1x100G
     E1/7: 1x100G
     E1/8: 1x100G
+    E1/20: 4x10G
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Switch
@@ -195,6 +197,7 @@ metadata:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8912
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.110/outlet/1
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:07:00.1
   name: ds4000-02
 spec:
   boot:
@@ -211,11 +214,51 @@ spec:
     E1/6: 1x100G
     E1/7: 1x100G
     E1/8: 1x100G
+    E1/20: 4x10G
+
+###
+### Gateway
+###
 ---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-1
+  namespace: fab
+spec:
+  interfaces:
+    enp2s1: {}
+    enp2s2: {}
+  workers: 8
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-01--gateway--gateway-1
+spec:
+  gateway:
+    links:
+      - gateway:
+          port: gateway-1/enp2s1
+        switch:
+          port: ds4000-01/E1/20/1
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-02--gateway--gateway-1
+spec:
+  gateway:
+    links:
+      - gateway:
+          port: gateway-1/enp2s2
+        switch:
+          port: ds4000-02/E1/20/1
+
 ###
 ### External
 ###
-
+---
 apiVersion: vpc.githedgehog.com/v1beta1
 kind: External
 metadata:
