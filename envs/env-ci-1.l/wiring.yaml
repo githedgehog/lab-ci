@@ -217,45 +217,6 @@ spec:
     E1/20: 4x10G
 
 ###
-### Gateway
-###
----
-apiVersion: gateway.githedgehog.com/v1alpha1
-kind: Gateway
-metadata:
-  name: gateway-1
-  namespace: fab
-spec:
-  interfaces:
-    enp2s1: {}
-    enp2s2: {}
-  workers: 8
----
-apiVersion: wiring.githedgehog.com/v1beta1
-kind: Connection
-metadata:
-  name: ds4000-01--gateway--gateway-1
-spec:
-  gateway:
-    links:
-      - gateway:
-          port: gateway-1/enp2s1
-        switch:
-          port: ds4000-01/E1/20/1
----
-apiVersion: wiring.githedgehog.com/v1beta1
-kind: Connection
-metadata:
-  name: ds4000-02--gateway--gateway-1
-spec:
-  gateway:
-    links:
-      - gateway:
-          port: gateway-1/enp2s2
-        switch:
-          port: ds4000-02/E1/20/1
-
-###
 ### External
 ###
 ---
