@@ -736,23 +736,23 @@ spec:
           port: server-3/enp2s2
         switch:
           port: ds3000-01/E1/2/2
----
-apiVersion: wiring.githedgehog.com/v1beta1
-kind: Server
-metadata:
-  name: server-4
----
-apiVersion: wiring.githedgehog.com/v1beta1
-kind: Connection
-metadata:
-  name: server-4--unbundled--ds3000-02
-spec:
-  unbundled:
-    link:
-      server:
-        port: server-4/enp2s1
-      switch:
-        port: ds3000-02/E1/1/4
+# ---
+# apiVersion: wiring.githedgehog.com/v1beta1
+# kind: Server
+# metadata:
+#   name: server-4
+# ---
+# apiVersion: wiring.githedgehog.com/v1beta1
+# kind: Connection
+# metadata:
+#   name: server-4--unbundled--ds3000-02
+# spec:
+#   unbundled:
+#     link:
+#       server:
+#         port: server-4/enp2s1
+#       switch:
+#         port: ds3000-02/E1/1/4
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Server
