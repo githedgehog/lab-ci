@@ -1,7 +1,6 @@
 ###
 ### Gateway
 ###
----
 apiVersion: gateway.githedgehog.com/v1alpha1
 kind: Gateway
 metadata:
