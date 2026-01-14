@@ -9,3 +9,6 @@ export HHFAB_GATEWAY_NODE_MGMT_LINK="pci@0000:01:00.2"
 
 # 25.06+
 export HHFAB_NODE_MGMT_LINKS="control-1=pci@0000:01:00.3,gateway-1=pci@0000:01:00.2"
+
+# Increase gateway VM RAM
+export HHFAB_VLAB_GW_RAM=16384
