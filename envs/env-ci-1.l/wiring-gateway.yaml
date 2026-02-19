@@ -2,6 +2,13 @@
 ### Gateway
 ###
 apiVersion: gateway.githedgehog.com/v1alpha1
+kind: GatewayGroup
+metadata:
+  name: default
+  namespace: default
+spec: {}
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
 kind: Gateway
 metadata:
   name: gateway-1
