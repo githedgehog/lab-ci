@@ -12,7 +12,7 @@ apiVersion: gateway.githedgehog.com/v1alpha1
 kind: Gateway
 metadata:
   name: gateway-1
-  namespace: fab
+  namespace: default
 spec:
   interfaces:
     enp2s1: {}
