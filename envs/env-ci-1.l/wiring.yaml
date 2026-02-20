@@ -807,3 +807,32 @@ spec:
         port: server-9/enp2s1
       switch:
         port: sse-c4632-01/E1/1/2
+
+###
+### Static External
+###
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: static-ext
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  ipv4Namespace: default
+  static:
+    prefixes:
+      - "0.0.0.0/0"
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-01--static-ext
+spec:
+  external: static-ext
+  connection: ds3000-01--external--ds2000-02
+  static:
+    remoteIP: 100.6.210.6
+    vlan: 210
+    ip: 100.6.210.2/24
+
