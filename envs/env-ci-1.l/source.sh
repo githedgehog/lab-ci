@@ -12,3 +12,6 @@ export HHFAB_GATEWAY_NODE_MGMT_LINK="pci@0000:01:00.2"
 
 # 25.06+
 export HHFAB_NODE_MGMT_LINKS="control-1=pci@0000:01:00.3,gateway-1=pci@0000:01:00.2"
+
+# 32a3343+
+export HHFAB_OOB_MGMT_IFACE=eno4  # pci@0000:01:00.3, formerly control-1 mgmt passthrough
