@@ -16,7 +16,16 @@ metadata:
 spec:
   interfaces:
     enp2s1: {}
-    enp2s2: {}
+  workers: 8
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-2
+  namespace: default
+spec:
+  interfaces:
+    enp2s1: {}
   workers: 8
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
@@ -34,11 +43,11 @@ spec:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: ds4000-02--gateway--gateway-1
+  name: ds4000-02--gateway--gateway-2
 spec:
   gateway:
     links:
       - gateway:
-          port: gateway-1/enp2s2
+          port: gateway-2/enp2s1
         switch:
           port: ds4000-02/E1/20/1
