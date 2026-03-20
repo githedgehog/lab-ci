@@ -226,6 +226,7 @@ metadata:
   name: default
   annotations:
     type.hhfab.githedgehog.com: hw
+    hhfab.githedgehog.com/test-bgp-nat-pool: 192.168.85.0/24
 spec:
   ipv4Namespace: default
   inboundCommunity: 65101:3001
@@ -818,6 +819,7 @@ metadata:
   name: static-ext
   annotations:
     type.hhfab.githedgehog.com: hw
+    hhfab.githedgehog.com/test-static-nat-pool: 192.168.71.0/24
 spec:
   ipv4Namespace: default
   static:
