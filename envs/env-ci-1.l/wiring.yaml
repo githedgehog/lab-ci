@@ -170,7 +170,7 @@ metadata:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8911
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/1
-    link.hhfab.githedgehog.com/E1_20_1: pci@0000:07:00.0
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:17:00.0
   name: ds4000-01
 spec:
   boot:
@@ -196,7 +196,7 @@ metadata:
     type.hhfab.githedgehog.com: hw
     serial.hhfab.githedgehog.com: ssh://192.168.90.10:8912
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.110/outlet/1
-    link.hhfab.githedgehog.com/E1_20_1: pci@0000:07:00.1
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:17:00.1
   name: ds4000-02
 spec:
   boot:
