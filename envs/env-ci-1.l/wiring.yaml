@@ -828,10 +828,10 @@ spec:
 apiVersion: vpc.githedgehog.com/v1beta1
 kind: ExternalAttachment
 metadata:
-  name: ds3000-01--static-ext
+  name: ds3000-03--static-ext
 spec:
   external: static-ext
-  connection: ds3000-01--external--ds2000-02
+  connection: ds3000-03--external--ds2000-02
   static:
     remoteIP: 100.6.210.6
     vlan: 210
