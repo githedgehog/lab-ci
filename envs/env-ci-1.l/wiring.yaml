@@ -44,7 +44,7 @@ metadata:
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:4d:00.1
     link.hhfab.githedgehog.com/E1_1_4: pci@0000:4f:00.0
     link.hhfab.githedgehog.com/E1_2_1: pci@0000:9c:00.0
-    link.hhfab.githedgehog.com/E1_2_2: pci@0000:9c:00.1 # not used
+    link.hhfab.githedgehog.com/E1_2_2: pci@0000:9c:00.1 # virt-external (port-acl release test)
   name: ds3000-01
 spec:
   boot:
@@ -685,18 +685,14 @@ metadata:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: server-3--bundled--ds3000-01
+  name: server-3--unbundled--ds3000-01
 spec:
-  bundled:
-    links:
-      - server:
-          port: server-3/enp2s1
-        switch:
-          port: ds3000-01/E1/1/4
-      - server:
-          port: server-3/enp2s2
-        switch:
-          port: ds3000-01/E1/2/2
+  unbundled:
+    link:
+      server:
+        port: server-3/enp2s1
+      switch:
+        port: ds3000-01/E1/1/4
 # ---
 # apiVersion: wiring.githedgehog.com/v1beta1
 # kind: Server
