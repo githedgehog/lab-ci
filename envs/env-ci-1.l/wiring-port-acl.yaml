@@ -1,0 +1,50 @@
+###
+### Port-ACL release test wiring overlay
+###
+### Adds a virtual external (managed Flatcar VM via virt-external) on
+### ds3000-01/E1/2/2 so the inbound-ACL release test in fabricator has
+### a probe source on real Broadcom hardware. The PCI passthrough slot
+### pci@0000:9c:00.1 is already wired (annotation present in the base
+### wiring) and not consumed by any other Connection.
+###
+### When this overlay is loaded, the fabricator vlab-builder creates a
+### virt-external VM with a passthrough NIC at pci@0000:9c:00.1 and the
+### agent provisions ds3000-01/E1/2/2 as an external-attachment ingress,
+### binding the hardcoded inbound ACL there. The release test SSHes to
+### virt-external in this VRF and probes the leaf-side IP.
+###
+### Static (non-proxy) attachment so no BGP session is required from the
+### probe-source VM. The peer is just a Flatcar host with bash; the leaf
+### still applies the same inbound ACL it would for a BGP attachment.
+
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: acl-test
+spec:
+  ipv4Namespace: default
+  static:
+    prefixes:
+      - "0.0.0.0/0"
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-01--external--acl-test
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-01/E1/2/2
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-01--acl-test
+spec:
+  external: acl-test
+  connection: ds3000-01--external--acl-test
+  static:
+    remoteIP: 100.99.100.6
+    vlan: 100
+    ip: 100.99.100.2/24
