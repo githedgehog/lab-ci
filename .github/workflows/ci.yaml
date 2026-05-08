@@ -69,7 +69,7 @@ jobs:
         buildmode:
           - iso
         vpcmode:
-          - l2vni
+          - mixed
         hybrid:
           - true
         upgradefrom:
