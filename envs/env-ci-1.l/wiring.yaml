@@ -22,7 +22,7 @@ spec:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: SwitchGroup
 metadata:
-  name: mclag-1
+  name: eslag-2
   namespace: default
 spec: {}
 ---
@@ -62,8 +62,8 @@ spec:
     E1/18: 4x25G
     E1/32: 4x25G
   redundancy:
-    group: mclag-1
-    type: mclag
+    group: eslag-2
+    type: eslag
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Switch
@@ -91,8 +91,8 @@ spec:
     E1/18: 4x25G
     E1/32: 4x25G
   redundancy:
-    group: mclag-1
-    type: mclag
+    group: eslag-2
+    type: eslag
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: SwitchGroup
@@ -405,32 +405,6 @@ spec:
 ###
 ### Connections
 ###
-
-apiVersion: wiring.githedgehog.com/v1beta1
-kind: Connection
-metadata:
-  name: ds3000-01--mclag-domain--ds3000-02
-spec:
-  mclagDomain:
-    peerLinks:
-      - switch1:
-          port: ds3000-01/E1/32/1
-        switch2:
-          port: ds3000-02/E1/32/1
-      - switch1:
-          port: ds3000-01/E1/32/2
-        switch2:
-          port: ds3000-02/E1/32/2
-    sessionLinks:
-      - switch1:
-          port: ds3000-01/E1/32/3
-        switch2:
-          port: ds3000-02/E1/32/3
-      - switch1:
-          port: ds3000-01/E1/32/4
-        switch2:
-          port: ds3000-02/E1/32/4
----
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
@@ -643,9 +617,9 @@ metadata:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: server-1--mclag--ds3000-01--ds3000-02
+  name: server-1--eslag--ds3000-01--ds3000-02
 spec:
-  mclag:
+  eslag:
     links:
       - server:
           port: server-1/enp2s1
@@ -664,9 +638,9 @@ metadata:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: server-2--mclag--ds3000-01--ds3000-02
+  name: server-2--eslag--ds3000-01--ds3000-02
 spec:
-  mclag:
+  eslag:
     links:
       - server:
           port: server-2/enp2s1
