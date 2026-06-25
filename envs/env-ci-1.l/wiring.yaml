@@ -48,7 +48,7 @@ metadata:
   name: ds3000-01
 spec:
   boot:
-    serial: DX030F2B031A05UB200007
+    serial: R4039F2B074C17GD300131
   role: server-leaf
   description: leaf-1
   profile: celestica-ds3000
@@ -78,7 +78,7 @@ metadata:
   name: ds3000-02
 spec:
   boot:
-    serial: DX030F2B043607UB200029
+    serial: R4039F2B074C17GD300133
   role: server-leaf
   description: leaf-2
   profile: celestica-ds3000
