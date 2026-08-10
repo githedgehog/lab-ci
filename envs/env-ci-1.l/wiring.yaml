@@ -718,18 +718,26 @@ metadata:
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Connection
 metadata:
-  name: server-6--eslag--ds3000-03--sse-c4632-01
+  name: server-6--unbundled--ds3000-03
 spec:
-  eslag:
-    links:
-      - server:
-          port: server-6/enp2s1
-        switch:
-          port: ds3000-03/E1/11/2
-      - server:
-          port: server-6/enp2s2
-        switch:
-          port: sse-c4632-01/E1/10/4
+  unbundled:
+    link:
+      server:
+        port: server-6/enp2s1
+      switch:
+        port: ds3000-03/E1/11/2
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-6--unbundled--sse-c4632-01
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-6/enp2s2
+      switch:
+        port: sse-c4632-01/E1/10/4
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Server
