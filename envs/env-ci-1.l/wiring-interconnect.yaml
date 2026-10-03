@@ -1,0 +1,94 @@
+##
+## Interconnect between the two fabrics: ds3000-02 (fabric-a) E1/26 <-> ds3000-03 (fabric-b) E1/26.
+## THIS CABLE DOES NOT EXIST in env-ci-1 today, the ports are unused in wiring.yaml and need a QSFP28 cable.
+## Both Externals set localASN (64910 for the one in fabric-a, 64911 for the one in fabric-b) and each attachment's
+## neighbor.asn is the other External's localASN, so neither side depends on the other fabric's leaf ASNs.
+## The hhfab.githedgehog.com/interconnect annotation is what makes hhfab treat the Externals as the two ends of one link.
+##
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: fabric-a
+  annotations:
+    hhfab.githedgehog.com/interconnect: fabric-b
+spec:
+  ipv4Namespace: default
+  inboundCommunity: '64800:1'
+  outboundCommunity: '64800:2'
+  localASN: 64911
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-03--external--to-fabric-a
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-03/E1/26
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-03--fabric-a
+  namespace: default
+spec:
+  external: fabric-a
+  connection: ds3000-03--external--to-fabric-a
+  switch:
+    ip: 100.64.0.1/30
+  neighbor:
+    asn: 64910
+    ip: 100.64.0.2
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: fabric-b
+  annotations:
+    hhfab.githedgehog.com/interconnect: fabric-a
+spec:
+  ipv4Namespace: ipns-a
+  inboundCommunity: '64800:2'
+  outboundCommunity: '64800:1'
+  localASN: 64910
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-02--external--to-fabric-b
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-02/E1/26
+  topology:
+    fabric: fabric-a
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-02--fabric-b
+  namespace: default
+spec:
+  external: fabric-b
+  connection: ds3000-02--external--to-fabric-b
+  switch:
+    ip: 100.64.0.2/30
+  neighbor:
+    asn: 64911
+    ip: 100.64.0.1
+  topology:
+    fabric: fabric-a

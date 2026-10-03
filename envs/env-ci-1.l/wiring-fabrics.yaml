@@ -1,0 +1,27 @@
+##
+## Fabrics for the two-fabric env-ci-1: disjoint leaf ASN ranges, fabric-a on a 4-byte range, both outside the
+## seeded default Fabric (65101-65533).
+##
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Fabric
+metadata:
+  name: fabric-a
+spec:
+  leafASNStart: 4200000000
+  leafASNEnd: 4200000080
+  domains:
+    default:
+      spineASN: 4200000090
+      gatewayASN: 4200000091
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Fabric
+metadata:
+  name: fabric-b
+spec:
+  leafASNStart: 64600
+  leafASNEnd: 64680
+  domains:
+    default:
+      spineASN: 64690
+      gatewayASN: 64691

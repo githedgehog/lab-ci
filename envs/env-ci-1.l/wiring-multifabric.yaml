@@ -1,0 +1,832 @@
+##
+## env-ci-1 with two fabrics (spine-leaf cabling, gateway in each fabric).
+##   fabric-a: spine ds4000-01, leaves ds3000-01/02 (eslag-2), gateway-1, servers 1-3, namespace ipns-a
+##   fabric-b: spine ds4000-02, leaves ds3000-03 and sse-c4632-01 (eslag-1, border), gateway-2, servers 5-9,
+##             Externals default, other and static-ext, namespace default
+## Spine-leaf cables that cross fabrics (ds4000-01 to ds3000-03/sse-c4632-01, ds4000-02 to ds3000-01/02) are
+## not declared. Use with wiring-fabrics.yaml and, for the interconnect, wiring-interconnect.yaml (needs a cable).
+## Generated from wiring.yaml and wiring-gateway.yaml.
+##
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: VLANNamespace
+metadata:
+  name: default
+spec:
+  ranges:
+  - from: 1000
+    to: 2999
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: IPv4Namespace
+metadata:
+  name: default
+spec:
+  subnets:
+  - 10.20.0.0/16
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: IPv4Namespace
+metadata:
+  name: ipns-a
+spec:
+  subnets:
+  - 10.30.0.0/16
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: SwitchGroup
+metadata:
+  name: eslag-2
+  namespace: default
+spec:
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: SwitchGroup
+metadata:
+  name: border
+  namespace: default
+spec:
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8901
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/3
+    link.hhfab.githedgehog.com/E1_1_2: pci@0000:4d:00.0
+    link.hhfab.githedgehog.com/E1_1_3: pci@0000:4d:00.1
+    link.hhfab.githedgehog.com/E1_1_4: pci@0000:4f:00.0
+    link.hhfab.githedgehog.com/E1_2_1: pci@0000:9c:00.0
+    link.hhfab.githedgehog.com/E1_2_2: pci@0000:9c:00.1
+  name: ds3000-01
+spec:
+  boot:
+    serial: R4039F2B074C17GD300131
+  role: server-leaf
+  description: leaf-1
+  profile: celestica-ds3000
+  portBreakouts:
+    E1/1: 4x10G
+    E1/2: 4x10G
+    E1/3: 4x10G
+    E1/4: 4x10G
+    E1/5: 4x10G
+    E1/17: 4x25G
+    E1/18: 4x25G
+    E1/32: 4x25G
+  redundancy:
+    group: eslag-2
+    type: eslag
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8902
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/4
+    link.hhfab.githedgehog.com/E1_1_2: pci@0000:4f:00.1
+    link.hhfab.githedgehog.com/E1_1_3: pci@0000:b8:00.0
+  name: ds3000-02
+spec:
+  boot:
+    serial: R4039F2B074C17GD300133
+  role: server-leaf
+  description: leaf-2
+  profile: celestica-ds3000
+  portBreakouts:
+    E1/1: 4x10G
+    E1/2: 4x10G
+    E1/3: 4x10G
+    E1/4: 4x10G
+    E1/17: 4x25G
+    E1/18: 4x25G
+    E1/32: 4x25G
+  redundancy:
+    group: eslag-2
+    type: eslag
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: SwitchGroup
+metadata:
+  name: eslag-1
+  namespace: default
+spec:
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8903
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/5
+    link.hhfab.githedgehog.com/E1_1_1: pci@0000:ba:00.0
+    link.hhfab.githedgehog.com/E1_1_2: pci@0000:ba:00.1
+    link.hhfab.githedgehog.com/E1_1_3: pci@0000:b3:00.0
+    link.hhfab.githedgehog.com/E1_11_2: pci@0000:9a:00.1
+  name: ds3000-03
+spec:
+  boot:
+    serial: DX030F2B043607UB200027
+  role: server-leaf
+  description: leaf-3
+  profile: celestica-ds3000
+  portBreakouts:
+    E1/1: 4x10G
+    E1/2: 4x10G
+    E1/3: 4x10G
+    E1/11: 4x10G
+    E1/17: 4x25G
+    E1/18: 4x25G
+  groups:
+  - border
+  redundancy:
+    group: eslag-1
+    type: eslag
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8904
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/6
+    link.hhfab.githedgehog.com/E1_1_2: pci@0000:b3:00.1
+    link.hhfab.githedgehog.com/E1_1_3: pci@0000:b5:00.0
+    link.hhfab.githedgehog.com/E1_10_4: pci@0000:9a:00.0
+  name: sse-c4632-01
+spec:
+  boot:
+    serial: SSC46AN03020014
+  role: server-leaf
+  description: leaf-4
+  profile: supermicro-sse-c4632sb
+  portBreakouts:
+    E1/1: 4x10G
+    E1/2: 4x10G
+    E1/3: 4x10G
+    E1/5: 4x25G
+    E1/10: 4x10G
+    E1/17: 4x25G
+    E1/18: 4x25G
+  groups:
+  - border
+  redundancy:
+    group: eslag-1
+    type: eslag
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8911
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/1
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:17:00.0
+  name: ds4000-01
+spec:
+  boot:
+    serial: R4009B2F062504LK200031
+  role: spine
+  description: spine-1
+  profile: celestica-ds4000
+  portBreakouts:
+    E1/1: 1x100G
+    E1/2: 1x100G
+    E1/3: 1x100G
+    E1/4: 1x100G
+    E1/5: 1x100G
+    E1/6: 1x100G
+    E1/7: 1x100G
+    E1/8: 1x100G
+    E1/20: 1x100G
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Switch
+metadata:
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    serial.hhfab.githedgehog.com: ssh://192.168.90.10:8912
+    power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.110/outlet/1
+    link.hhfab.githedgehog.com/E1_20_1: pci@0000:17:00.1
+  name: ds4000-02
+spec:
+  boot:
+    serial: R4009B2F062504LK200006
+  role: spine
+  description: spine-2
+  profile: celestica-ds4000
+  portBreakouts:
+    E1/1: 1x100G
+    E1/2: 1x100G
+    E1/3: 1x100G
+    E1/4: 1x100G
+    E1/5: 1x100G
+    E1/6: 1x100G
+    E1/7: 1x100G
+    E1/8: 1x100G
+    E1/20: 1x100G
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: default
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    hhfab.githedgehog.com/test-bgp-nat-pool: 192.168.85.0/24
+spec:
+  ipv4Namespace: default
+  inboundCommunity: 65101:3001
+  outboundCommunity: 3001:65101
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: other
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  ipv4Namespace: default
+  inboundCommunity: 65101:4001
+  outboundCommunity: 4001:65101
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-01--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-01/E1/1/1
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-02--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-02/E1/1/1
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-03--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: ds3000-03/E1/1/4
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: sse-c4632-01--external--ds2000-02
+  annotations:
+    type.hhfab.githedgehog.com: hw
+spec:
+  external:
+    link:
+      switch:
+        port: sse-c4632-01/E1/1/1
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-03--default
+spec:
+  external: default
+  connection: ds3000-03--external--ds2000-02
+  switch:
+    vlan: 100
+    ip: 100.6.100.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.6.100.6
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: sse-c4632-01--default
+spec:
+  external: default
+  connection: sse-c4632-01--external--ds2000-02
+  switch:
+    vlan: 100
+    ip: 100.8.100.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.8.100.6
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-03--other
+spec:
+  external: other
+  connection: ds3000-03--external--ds2000-02
+  switch:
+    vlan: 200
+    ip: 100.6.200.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.6.200.6
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: sse-c4632-01--other
+spec:
+  external: other
+  connection: sse-c4632-01--external--ds2000-02
+  switch:
+    vlan: 200
+    ip: 100.8.200.2/24
+  neighbor:
+    asn: 64102
+    ip: 100.8.200.6
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-01--fabric--ds3000-01
+spec:
+  fabric:
+    links:
+    - spine:
+        port: ds4000-01/E1/1
+      leaf:
+        port: ds3000-01/E1/28
+    - spine:
+        port: ds4000-01/E1/2
+      leaf:
+        port: ds3000-01/E1/29
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-01--fabric--ds3000-02
+spec:
+  fabric:
+    links:
+    - spine:
+        port: ds4000-01/E1/3
+      leaf:
+        port: ds3000-02/E1/28
+    - spine:
+        port: ds4000-01/E1/4
+      leaf:
+        port: ds3000-02/E1/29
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-02--fabric--ds3000-03
+spec:
+  fabric:
+    links:
+    - spine:
+        port: ds4000-02/E1/5
+      leaf:
+        port: ds3000-03/E1/30
+    - spine:
+        port: ds4000-02/E1/6
+      leaf:
+        port: ds3000-03/E1/31
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-02--fabric--sse-c4632-01
+spec:
+  fabric:
+    links:
+    - spine:
+        port: ds4000-02/E1/7
+      leaf:
+        port: sse-c4632-01/E1/30
+    - spine:
+        port: ds4000-02/E1/8
+      leaf:
+        port: sse-c4632-01/E1/31
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-01--vpc-loopback
+spec:
+  vpcLoopback:
+    links:
+    - switch1:
+        port: ds3000-01/E1/17/1
+      switch2:
+        port: ds3000-01/E1/18/1
+    - switch1:
+        port: ds3000-01/E1/17/2
+      switch2:
+        port: ds3000-01/E1/18/2
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-02--vpc-loopback
+spec:
+  vpcLoopback:
+    links:
+    - switch1:
+        port: ds3000-02/E1/17/1
+      switch2:
+        port: ds3000-02/E1/18/1
+    - switch1:
+        port: ds3000-02/E1/17/2
+      switch2:
+        port: ds3000-02/E1/18/2
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds3000-03--vpc-loopback
+spec:
+  vpcLoopback:
+    links:
+    - switch1:
+        port: ds3000-03/E1/17/1
+      switch2:
+        port: ds3000-03/E1/18/1
+    - switch1:
+        port: ds3000-03/E1/17/2
+      switch2:
+        port: ds3000-03/E1/18/2
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: sse-c4632-01--vpc-loopback
+spec:
+  vpcLoopback:
+    links:
+    - switch1:
+        port: sse-c4632-01/E1/17/1
+      switch2:
+        port: sse-c4632-01/E1/18/1
+    - switch1:
+        port: sse-c4632-01/E1/17/2
+      switch2:
+        port: sse-c4632-01/E1/18/2
+    - switch1:
+        port: sse-c4632-01/E1/17/3
+      switch2:
+        port: sse-c4632-01/E1/18/3
+    - switch1:
+        port: sse-c4632-01/E1/17/4
+      switch2:
+        port: sse-c4632-01/E1/18/4
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-1
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-1--eslag--ds3000-01--ds3000-02
+spec:
+  eslag:
+    links:
+    - server:
+        port: server-1/enp2s1
+      switch:
+        port: ds3000-01/E1/1/2
+    - server:
+        port: server-1/enp2s2
+      switch:
+        port: ds3000-02/E1/1/2
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-2
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-2--eslag--ds3000-01--ds3000-02
+spec:
+  eslag:
+    links:
+    - server:
+        port: server-2/enp2s1
+      switch:
+        port: ds3000-01/E1/1/3
+    - server:
+        port: server-2/enp2s2
+      switch:
+        port: ds3000-02/E1/1/3
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-3
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-3--bundled--ds3000-01
+spec:
+  bundled:
+    links:
+    - server:
+        port: server-3/enp2s1
+      switch:
+        port: ds3000-01/E1/1/4
+    - server:
+        port: server-3/enp2s2
+      switch:
+        port: ds3000-01/E1/2/2
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-5
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-5--eslag--ds3000-03--sse-c4632-01
+spec:
+  eslag:
+    links:
+    - server:
+        port: server-5/enp2s1
+      switch:
+        port: ds3000-03/E1/1/3
+    - server:
+        port: server-5/enp2s2
+      switch:
+        port: sse-c4632-01/E1/1/3
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-6
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-6--eslag--ds3000-03--sse-c4632-01
+spec:
+  eslag:
+    links:
+    - server:
+        port: server-6/enp2s1
+      switch:
+        port: ds3000-03/E1/11/2
+    - server:
+        port: server-6/enp2s2
+      switch:
+        port: sse-c4632-01/E1/10/4
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-7
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-7--unbundled--ds3000-03
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-7/enp2s1
+      switch:
+        port: ds3000-03/E1/1/1
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-8
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-8--unbundled--ds3000-03
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-8/enp2s1
+      switch:
+        port: ds3000-03/E1/1/2
+  topology:
+    fabric: fabric-b
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-9
+spec: {}
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-9--unbundled--sse-c4632-01
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-9/enp2s1
+      switch:
+        port: sse-c4632-01/E1/1/2
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: External
+metadata:
+  name: static-ext
+  annotations:
+    type.hhfab.githedgehog.com: hw
+    hhfab.githedgehog.com/test-static-nat-pool: 192.168.71.0/24
+spec:
+  ipv4Namespace: default
+  static:
+    prefixes:
+    - 0.0.0.0/0
+  topology:
+    fabric: fabric-b
+---
+apiVersion: vpc.githedgehog.com/v1beta1
+kind: ExternalAttachment
+metadata:
+  name: ds3000-03--static-ext
+spec:
+  external: static-ext
+  connection: ds3000-03--external--ds2000-02
+  static:
+    remoteIP: 100.6.210.6
+    vlan: 210
+    ip: 100.6.210.2/24
+  topology:
+    fabric: fabric-b
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: GatewayGroup
+metadata:
+  name: default
+  namespace: default
+spec:
+  topology:
+    fabric: fabric-b
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: GatewayGroup
+metadata:
+  name: default-a
+  namespace: default
+spec:
+  topology:
+    fabric: fabric-a
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-1
+  namespace: default
+spec:
+  interfaces:
+    enp2s1np0: {}
+  workers: 16
+  topology:
+    fabric: fabric-a
+  groups:
+  - name: default-a
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-2
+  namespace: default
+spec:
+  interfaces:
+    enp2s1np1: {}
+  workers: 16
+  topology:
+    fabric: fabric-b
+  groups:
+  - name: default
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-01--gateway--gateway-1
+spec:
+  gateway:
+    links:
+    - gateway:
+        port: gateway-1/enp2s1np0
+      switch:
+        port: ds4000-01/E1/20/1
+  topology:
+    fabric: fabric-a
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-02--gateway--gateway-2
+spec:
+  gateway:
+    links:
+    - gateway:
+        port: gateway-2/enp2s1np1
+      switch:
+        port: ds4000-02/E1/20/1
+  topology:
+    fabric: fabric-b
