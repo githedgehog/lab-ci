@@ -1,7 +1,19 @@
 ###
 ### Basic entities: namespaces, racks, switches
 ###
-
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Fabric
+metadata:
+  name: default
+  namespace: default
+spec:
+  domains:
+    default:
+      gatewayASN: 65534
+      spineASN: 65100
+  leafASNEnd: 65533
+  leafASNStart: 65101
+---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: VLANNamespace
 metadata:
