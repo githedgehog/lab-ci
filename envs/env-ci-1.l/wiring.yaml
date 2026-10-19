@@ -86,7 +86,7 @@ metadata:
     power.hhfab.githedgehog.com/psu1_psu2: http://192.168.90.142/outlet/4
     link.hhfab.githedgehog.com/E1_1_2: pci@0000:4f:00.1
     link.hhfab.githedgehog.com/E1_1_3: pci@0000:b8:00.0
-    # link.hhfab.githedgehog.com/E1_1_4: pci@0000:b8:00.1
+    link.hhfab.githedgehog.com/E1_1_4: pci@0000:b8:00.1
   name: ds3000-02
 spec:
   boot:
@@ -683,23 +683,35 @@ spec:
           port: server-3/enp2s2
         switch:
           port: ds3000-01/E1/2/2
-# ---
-# apiVersion: wiring.githedgehog.com/v1beta1
-# kind: Server
-# metadata:
-#   name: server-4
-# ---
-# apiVersion: wiring.githedgehog.com/v1beta1
-# kind: Connection
-# metadata:
-#   name: server-4--unbundled--ds3000-02
-# spec:
-#   unbundled:
-#     link:
-#       server:
-#         port: server-4/enp2s1
-#       switch:
-#         port: ds3000-02/E1/1/4
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Server
+metadata:
+  name: server-4
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-4--unbundled--ds3000-02
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-4/enp2s1
+      switch:
+        port: ds3000-02/E1/1/4
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: server-4--unbundled--ds3000-01
+spec:
+  unbundled:
+    link:
+      server:
+        port: server-4/enp2s2
+      switch:
+        port: ds3000-01/E1/2/1
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
 kind: Server
