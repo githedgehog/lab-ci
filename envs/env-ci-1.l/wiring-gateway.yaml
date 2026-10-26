@@ -14,8 +14,11 @@ metadata:
   name: gateway-1
   namespace: default
 spec:
+  driver: kernel
   interfaces:
-    enp2s1np0: {}
+    port1:
+      pci: 0000:00:10.0
+      kernel: enp0s16np0
   workers: 16
 ---
 apiVersion: gateway.githedgehog.com/v1alpha1
@@ -24,8 +27,11 @@ metadata:
   name: gateway-2
   namespace: default
 spec:
+  driver: kernel
   interfaces:
-    enp2s1np1: {}
+    port1:
+      pci: 0000:00:10.0
+      kernel: enp0s16np1
   workers: 16
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
@@ -36,7 +42,7 @@ spec:
   gateway:
     links:
       - gateway:
-          port: gateway-1/enp2s1np0
+          port: gateway-1/port1
         switch:
           port: ds4000-01/E1/20/1
 ---
@@ -48,6 +54,6 @@ spec:
   gateway:
     links:
       - gateway:
-          port: gateway-2/enp2s1np1
+          port: gateway-2/port1
         switch:
           port: ds4000-02/E1/20/1
