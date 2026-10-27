@@ -17,8 +17,8 @@ spec:
   driver: kernel
   interfaces:
     port1:
-      pci: 0000:00:10.0
-      kernel: enp0s16np0
+      pci: 0000:05:00.0
+      kernel: enp5s0np0
   workers: 16
 ---
 apiVersion: gateway.githedgehog.com/v1alpha1
@@ -30,8 +30,8 @@ spec:
   driver: kernel
   interfaces:
     port1:
-      pci: 0000:00:10.0
-      kernel: enp0s16np1
+      pci: 0000:05:00.0
+      kernel: enp5s0np1
   workers: 16
 ---
 apiVersion: wiring.githedgehog.com/v1beta1
