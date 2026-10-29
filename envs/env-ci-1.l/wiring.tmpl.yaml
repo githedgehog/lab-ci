@@ -1,3 +1,18 @@
+{{- /*
+  Rendered by hhfab init, values:
+    gateway: empty for no gateway (default), or the gateway driver: kernel or dpdk;
+             needs the config with the gateways, e.g. hhfab init --gateways=2
+*/ -}}
+{{- $gateway := .Values.gateway | default "" }}
+{{- if not (has $gateway (list "" "kernel" "dpdk")) }}
+{{- fail (printf "gateway should be empty (no gateway), kernel or dpdk, got %q" (toString $gateway)) }}
+{{- end }}
+{{- if and $gateway (not .Fab.Spec.Config.Gateway.Enable) }}
+{{- fail "gateway is set but the config has no gateways, pass --gateways=2 to hhfab init" }}
+{{- end }}
+{{- if and (not $gateway) .Fab.Spec.Config.Gateway.Enable }}
+{{- fail "the config has gateways, set gateway to the driver: kernel or dpdk" }}
+{{- end -}}
 ###
 ### Basic entities: namespaces, racks, switches
 ###
@@ -750,3 +765,66 @@ spec:
     remoteIP: 100.6.210.6
     vlan: 210
     ip: 100.6.210.2/24
+{{- if $gateway }}
+
+###
+### Gateway
+###
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: GatewayGroup
+metadata:
+  name: default
+  namespace: default
+spec: {}
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-1
+  namespace: default
+spec:
+  driver: {{ $gateway }}
+  interfaces:
+    port1:
+      pci: 0000:05:00.0
+      kernel: enp5s0np0
+  workers: 16
+---
+apiVersion: gateway.githedgehog.com/v1alpha1
+kind: Gateway
+metadata:
+  name: gateway-2
+  namespace: default
+spec:
+  driver: {{ $gateway }}
+  interfaces:
+    port1:
+      pci: 0000:05:00.0
+      kernel: enp5s0np1
+  workers: 16
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-01--gateway--gateway-1
+spec:
+  gateway:
+    links:
+      - gateway:
+          port: gateway-1/port1
+        switch:
+          port: ds4000-01/E1/20/1
+---
+apiVersion: wiring.githedgehog.com/v1beta1
+kind: Connection
+metadata:
+  name: ds4000-02--gateway--gateway-2
+spec:
+  gateway:
+    links:
+      - gateway:
+          port: gateway-2/port1
+        switch:
+          port: ds4000-02/E1/20/1
+{{- end }}
