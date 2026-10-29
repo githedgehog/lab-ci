@@ -9,7 +9,7 @@ default: update-diagrams
 update-diagrams-env-ci-1-spine-leaf:
 	@echo "Generating diagrams for env-ci-1.l: spine-leaf"
 	mkdir -p env-ci-1.l/diagrams/spine-leaf
-	hhfab init --dev -f -w env-ci-1.l/wiring.yaml
+	hhfab init --dev -f -w env-ci-1.l/wiring.tmpl.yaml
 	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio
 	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio
 	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio
@@ -25,7 +25,7 @@ update-diagrams-env-ci-1-spine-leaf:
 update-diagrams-env-ci-1-gateway:
 	@echo "Generating diagrams for env-ci-1.l: spine-leaf-gateway"
 	mkdir -p env-ci-1.l/diagrams/spine-leaf
-	hhfab init --dev -f --gw -w env-ci-1.l/wiring.yaml -w env-ci-1.l/wiring-gateway.yaml
+	hhfab init --dev -f --gateways=2 -w env-ci-1.l/wiring.tmpl.yaml --set gateway=kernel
 	hhfab diagram --format drawio --style default --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf.drawio
 	hhfab diagram --format drawio --style cisco --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-cisco.drawio
 	hhfab diagram --format drawio --style hedgehog --output env-ci-1.l/diagrams/spine-leaf/env-ci-1-spine-leaf-hedgehog.drawio
